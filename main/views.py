@@ -7,4 +7,4 @@ def index(response):
     return HttpResponse("Welcome to Lotto checker site")
 
 def v1(response):
-    return HttpResponse("Welcome to Lotto checker site")
+    return HttpResponse("Welcome to Lotver site")
