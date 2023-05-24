@@ -1,0 +1,15 @@
+{% extends "main/base.html" %}
+{% block title %} 
+View List
+{% endblock %}
+
+{% block content %} 
+{% for element in ls %}
+<h1>{{element.name}}</h1>
+<u1>
+{% for type in element.type_set.all %}
+    <li>{{type.typing}}</li>
+{% endfor %}
+</u1>
+{% endfor %}
+{% endblock %}
