@@ -5,7 +5,8 @@ Create new type
 {% block content %} 
 Create typing
 <form method="post" action="/create/">
-    {{form}}
+    {% csrf_token %}
+    {{form.as_p}}
     <button type="submit", name="save">Create</button>
 </form>
 {% endblock %}

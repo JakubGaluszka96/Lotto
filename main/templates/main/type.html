@@ -4,10 +4,22 @@ View List
 {% endblock %}
 
 {% block content %} 
-<h1>{{ls.name}}</h1>
-<u1>
-{% for type in ls.type_set.all %}
-    <li>{{type.typing}}</li>
-{% endfor %}
-</u1>
+    <h1>{{ls.name}}</h1>
+    <form method="post" action="#">
+        {% csrf_token %}
+        <u1>
+            {% for type in ls.type_set.all %}
+                {% if type.winner == True %}
+                    <li><input type="checkbox", value="clicked", name="c{{type.id}}" checked>{{type.typing}}</li>
+                {% else %}
+                    <li><input type="checkbox", value="clicked", name="c{{type.id}}">{{type.typing}}</li>
+                {% endif %}
+            {% endfor %}
+        </u1>
+        <br>
+        <button type="submit", name="save", value="save">Save</button>
+        <input type="text", name="new">
+        <button type="submit", name="newType", value="newType">Add Type</button>
+    </form>
+
 {% endblock %}
