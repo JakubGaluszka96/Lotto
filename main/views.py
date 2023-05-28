@@ -37,13 +37,13 @@ def home(response):
 def create(response):
     if response.method == "POST":
         form = CreateNewType(response.POST)
-
+        print(form)
         if form.is_valid():
             n = form.cleaned_data["name"]
             t = TypesList(name=n)
             t.save() 
-
         return HttpResponseRedirect("/%i" %t.id)
+        
     else:
         form = CreateNewType()
         return render(response, "main/create.html", {"form":form})

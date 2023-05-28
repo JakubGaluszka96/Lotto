@@ -7,19 +7,28 @@ View List
     <h1>{{ls.name}}</h1>
     <form method="post" action="#">
         {% csrf_token %}
-        <u1>
             {% for type in ls.type_set.all %}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
                 {% if type.winner == True %}
-                    <li><input type="checkbox", value="clicked", name="c{{type.id}}" checked>{{type.typing}}</li>
+                    <input type="checkbox", value="clicked", name="c{{type.id}}" checked>
                 {% else %}
-                    <li><input type="checkbox", value="clicked", name="c{{type.id}}">{{type.typing}}</li>
+                    <input type="checkbox", value="clicked", name="c{{type.id}}">
                 {% endif %}
+                    </div>
+                </div>
+                <input type="text", value="{{type.typing}}" class="form-control">
+            </div>
             {% endfor %}
-        </u1>
         <br>
-        <button type="submit", name="save", value="save">Save</button>
-        <input type="text", name="new">
-        <button type="submit", name="newType", value="newType">Add Type</button>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button type="submit", name="newType", value="newType" class="btn btn-success">Add Type</button>
+            </div>
+            <input type="text", name="new">
+        </div>
+                <button type="submit", name="save", value="save" class="btn btn-success">Save</button>
     </form>
 
 {% endblock %}
