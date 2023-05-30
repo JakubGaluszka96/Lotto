@@ -1,28 +1,28 @@
 <!doctype html>
 <html>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container d-flex flex-wrap">
+            <ul class="nav me-auto align-items-center justify-content-left">
+                <li class="nav-item">          
+                <a class="navbar-brand" href="#">
+                <img src="https://www.lotto.pl/cdn/2b905a22797b642209815161ab7dae73.svg" alt="Logo" width="90" height="72" class="d-inline-block align-text-top">
+                </a>  
+                </li>
+              <li class="nav-item"><button type="button" class="btn btn-outline-light me-2">Login</button></li>
+              <li class="nav-item"><button type="button" class="btn btn-warning">Sign-up</button></li>
+            </ul>
+          </div>
+      </nav>
     <head>
         <style type="text/css">
-            .sidebar {
-                height:100%;
-                width:100px;
-                position: fixed;
-                z-index:1;
-                top:0;
-                left:0;
-                background-color:#111;
-                overflow-x: :hidden;
-                padding-top:20px;
-            }
 
-            .sidebar a {
+
+            .navbar a {
                 padding:6px 8px 6px 16px;
                 text-decoration: none;
-                font-size:25px;
+                font-size:40px;
                 color: #818181;
                 display:block;
-            }
-            .sidebar a:hover {
-                color:#f1f1f1;
             }
             .main{
                 margin-left:160px;
@@ -40,15 +40,9 @@
     </head>
 
 <body>
-    <div class="sidebar">
-        <a href="/">Home</a>
-        <a href="/list">Types</a>
-        <a href="/create">Create</a>
-    </div>
     <div id="content", name="content", class="main">
         <div class="row justify-content-left">
             <div class="col-8">
-                <h1 class="mt-2">My Site</h1>
                 <hr class="mt-0 mb-4">
                     {% block content %}
                     {% endblock %}
