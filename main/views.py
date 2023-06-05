@@ -32,7 +32,9 @@ def list(response):
     return render(response, "main/list.html", {"ls":ls})
 
 def home(response):
-    return render(response, "main/home.html", {})
+    lista = [x for x in range(1,50)]
+    number = [x for x in range(0,6)]
+    return render(response, "main/home.html", {"range" :lista, "number":number})
 
 def create(response):
     if response.method == "POST":
