@@ -1,43 +1,75 @@
 {% extends 'main/base.html' %}
 {% block content %}
-<p1>Wybierz swoje typy:</p> 
-{% for i in number %}
-<select class="form-select" aria-label="Default select example">
-  <option selected>Wybierz liczbę</option>
-    {% for i in range %}
-    <option value="{{ i }}">{{ i }}</option>
-    {% endfor %}
-</select>
-{% endfor %}
+<form method="post" action="#" class="form-group">
+    {% csrf_token %}
+<h6>Wybierz swoje typy:</h> 
 <br>
-<p1>Podaj przedział czsowy swojego zakładu:</p> 
+<div class="form-group col-md-12 mb-3">
+    <label for="{{ form.number1.label }}">{{ form.number1.label }}</label>
+    {{ form.number1 }}
+</div>
+<div class="form-group col-md-12 mb-3">
+    <label for="{{ form.number2.label }}">{{ form.number2.label }}</label>
+    {{ form.number2 }}
+</div>
+<div class="form-group col-md-12 mb-3">
+    <label for="{{ form.number3.label }}">{{ form.number3.label }}</label>
+    {{ form.number3 }}
+</div>
+<div class="form-group col-md-12 mb-3">
+    <label for="{{ form.number4.label }}">{{ form.number4.label }}</label>
+    {{ form.number4 }}
+</div>
+<div class="form-group col-md-12 mb-3">
+    <label for="{{ form.number5.label }}">{{ form.number5.label }}</label>
+    {{ form.number5 }}
+</div>
+<div class="form-group col-md-12 mb-3">
+    <label for="{{ form.number6.label }}">{{ form.number6.label }}</label>
+    {{ form.number6 }}
+</div>
+
+<br>
+<h6>Podaj przedział czsowy swojego zakładu:</h> 
   <body style="background-color: ivory;">
+
     <section class="container">
-        <h3 class="pt-4 pb-2">Bootstrap Datepicker</h3>
-        <form>
-            <div class="row form-group">
-                <label for="date" class="col-sm-1 col-form-label">Date</label>
-                <div class="col-sm-4">
-                    <div class="input-group date" id="datepicker">
-                        <input type="text" class="form-control">
-                        <span class="input-group-append">
-                            <span class="input-group-text bg-white d-block">
-                                <i class="fa fa-calendar"></i>
-                            </span>
-                        </span>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="date" class="col-sm-3 col-form-label">Data rozpoczęcia zakładu</label>
+                {{ form.startdate }}
             </div>
-        </form>
     </section>
 
+    <section class="container">
+            <div class="row form-group">
+                <div class="form-group">
+                    <label for="date" class="col-sm-3 col-form-label">Data zakończenia zakładu</label>
+                        {{ form.enddate }}
+                </div>
+            </div>
+    </section>
+
+    <br>
     <script type="text/javascript">
         $(function() {
-            $('#datepicker').datepicker();
+            $('#datepicker-start').datepicker();
         });
     </script>
 
-
+    <script type="text/javascript">
+        $(function() {
+            $('#datepicker-end').datepicker();
+        });
+    </script>
+    <div class="form-check">
+        {{ form.isplus }}
+        <label class="form-check-label" for="flexCheckDefault">
+            Z plusem
+        </label>
+      </div>
+    <br>
+    <button type="submit" name="save" class="btn btn-primary">Sprawdź</button>
+    </form>
 </body>
 
 

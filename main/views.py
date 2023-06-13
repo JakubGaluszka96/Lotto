@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import TypesList, Type
-from .forms import CreateNewType
+from .forms import CreateNewType, CheckType
 # Create your views here.
 
 def index(response, id):
@@ -34,7 +34,14 @@ def list(response):
 def home(response):
     lista = [x for x in range(1,50)]
     number = [x for x in range(0,6)]
-    return render(response, "main/home.html", {"range" :lista, "number":number})
+    if response.method == "POST":
+        form = CheckType(response.POST)
+        if form.is_valid():
+            n1=form.cleaned_data["number1"]
+        return HttpResponseRedirect("/#")
+    else:
+        form = CheckType()
+        return render(response, "main/home.html", {"form":form, "range" :lista, "number":number})
 
 def create(response):
     if response.method == "POST":
