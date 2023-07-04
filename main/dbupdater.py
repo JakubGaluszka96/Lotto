@@ -9,7 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import json
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from main.models import LottoDraw, Typing
+from main.models import LottoDraw
 
 class SeleniumDbUpdater():
 
@@ -21,10 +21,17 @@ class SeleniumDbUpdater():
         driver=webdriver.Chrome(service=s)
         driver.get("https://www.lotto.pl/lotto/wyniki-i-wygrane")
         self.lastId = driver.find_element(By.CLASS_NAME,"result-item__number").get_attribute("innerHTML").replace(" ", "").strip()
-        LastIDfromDB = LottoDraw.objects.all().order_by("-id")[0].id
+        if len(LottoDraw.objects.all()) != 0:
+            LastIDfromDB = LottoDraw.objects.all().order_by("-id")[0].id
+        else:
+            LastIDfromDB = 0
         if LastIDfromDB == self.lastId:
             return print("DB up to date")
-        url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.lastId+"&index=1&size="+self.lastId+"&sort=drawSystemId&order=DESC"
+        if LastIDfromDB == 0:
+            url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.lastId+"&index=1&size="+self.lastId+"&sort=drawSystemId&order=DESC"
+        else:
+            size = self.lastId - LastIDfromDB
+            url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.lastId+"&index=1&size="+size+"&sort=drawSystemId&order=DESC"
         driver.get(url)
         result = driver.find_element(By.TAG_NAME,"pre").get_attribute("innerHTML")
         driver.close()
@@ -43,13 +50,13 @@ class SeleniumDbUpdater():
                     numbers=result["resultsJson"]
                     for number in numbers:
                         mod.typing_set.create(number=number, isplus=False)
-                else:
+                if result["gameType"] == "LottoPlus":
                     plusnumbers = result["resultsJson"]
                     for number in plusnumbers:
-                        mod.typing_set.create(number=number, isplus=True)            
+                        mod.typing_set.create(number=number, isplus=True)          
             mod.save()
-
-        return     
+        return  
+       
     def __str__(self):
         return self
 

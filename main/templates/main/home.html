@@ -70,8 +70,26 @@
     <br>
     <button type="submit" name="save" class="btn btn-primary">Sprawdź</button>
     </form>
-    {{ result }}
+
+    <hr>
+    {% for draw in result %}
+        <p>{{ draw.id }}       {{ draw.date }}</p>
+       <p>{% for i in draw.typing_set.all %}
+        {% if i.isplus == False %}
+         {{ i.number }}
+         {% endif %}
+         {% endfor %}
+       </p>
+       
+       <p>{% for i in draw.typing_set.all %}        
+        {% if i.isplus == True %}
+        {{ i.number }}
+        {% endif %}
+         {% endfor %}
+       </p>
+    {% endfor %}
 </body>
+
 
 
 

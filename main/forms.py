@@ -5,17 +5,7 @@ import numpy as np
 class CreateNewBet(forms.Form):
     name = forms.CharField(label="Name", max_length=200)
 
-class Typing(forms.Form):
-    INTEGER_CHOICES= [tuple()]
-    number=forms.IntegerField(label="1", widget=forms.Select(choices=INTEGER_CHOICES))
-    winner=forms.BooleanField(label="win", required=False)
 
-    def __init__(self, maxNumber):
-        INTEGER_CHOICES= [tuple([x,x]) for x in range(1,maxNumber)]
-        return self
-    def __init__(self):
-        return self
-       
 
 class CheckType(forms.Form):
     INTEGER_CHOICES = [tuple([x,x]) for x in range(1,50)]
@@ -27,18 +17,36 @@ class CheckType(forms.Form):
     number6 = forms.IntegerField(label="6 typ", widget=forms.Select(choices=INTEGER_CHOICES))
     startdate = forms.DateField(
     widget=forms.SelectDateWidget(
-        empty_label=("Choose Year", "Choose Month", "Choose Day"),
+        empty_label=("Choose Year", "Choose Month", "Choose Day"),years=range(1957, 2024),
     ),
 )
     
     enddate = forms.DateField(
     widget=forms.SelectDateWidget(
-        empty_label=("Choose Year", "Choose Month", "Choose Day"),
+        empty_label=("Choose Year", "Choose Month", "Choose Day"),years=range(1957, 2024),
     ),
     )
     isplus= forms.BooleanField(label="isplus", required=False)
-        
 
+    def is_unique(self):
+        numbers = [self.number1, self.number2, self.number3, self.number4, self.number5, self.number6]
+        for i in range(len(numbers)):
+            for j in range(len(numbers)):
+                if i !=j:
+                    if numbers[i] == numbers[j]:
+                        return False
+        return True
+        
+class Typing(forms.Form):
+    INTEGER_CHOICES= [tuple()]
+    number=forms.IntegerField(label="1", widget=forms.Select(choices=INTEGER_CHOICES))
+    winner=forms.BooleanField(label="win", required=False)
+
+    def __init__(self, maxNumber):
+        INTEGER_CHOICES= [tuple([x,x]) for x in range(1,maxNumber)]
+        return self
+    def __init__(self):
+        return self
 
 
 

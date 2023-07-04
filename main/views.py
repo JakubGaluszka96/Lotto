@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import BetList, Bet
 from .forms import CreateNewBet, CheckType, Typing
 from .dbupdater import SeleniumDbUpdater
+from .typechecker import TypeChecker
 # Create your views here.
 
 def index(response, id):
@@ -34,24 +35,29 @@ def list(response):
 
 def update(response):
     Updater=SeleniumDbUpdater()
-    Updater.GetLastID()
+    Updater.Update()
+
     return render(response, "main/base.html")
 
 
 def home(response):
-    
+    result = ""
     if response.method == "POST":
         form = CheckType(response.POST)
-        if form.is_valid():
-            print(form)
+        if form.is_valid():# and form.is_unique():
             type=Bet()
-            print(type)
-            type.assign(form=form)
-            result=type.isplus
-        return HttpResponseRedirect("/#", {"result":result})
+            type.ParseForm(form=form)
+            checker = TypeChecker()
+            checker.GetDrawsByPeriod(type)
+            result = checker.draws
+            
+            
+        return render(response, "main/home.html", {"form":form, "result":result})
     else:
         form = CheckType()
         return render(response, "main/home.html", {"form":form})
+
+
 
 def create(response):
     if response.method == "POST":
