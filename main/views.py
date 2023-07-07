@@ -49,14 +49,8 @@ def home(response):
             type.ParseForm(form=form)
             checker = TypeChecker()
             checker.MakeResults(type)
-            result = checker.results[0]
-            print(result.id)
-            print(result.date)
-            print(result.winsPlus)
-            print(result.lottoPlus[0].number)
-            print(result.lottoPlus[0].win)
-            result=checker.GetDrawsByPeriod(type)
-        return render(response, "main/home.html", {"form":form, "result":result})
+            results = checker.results
+        return render(response, "main/home.html", {"form":form, "results":results})
     else:
         form = CheckType()
         return render(response, "main/home.html", {"form":form})

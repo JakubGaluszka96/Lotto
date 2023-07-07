@@ -2,6 +2,7 @@
 {% block content %}
 <form method="post" action="#" class="form-group">
     {% csrf_token %}
+<div class="form-group">
 <h6>Wybierz swoje typy:</h> 
 <br>
 <div class="form-group col-md-12 mb-3">
@@ -28,13 +29,17 @@
     <label for="{{ form.number6.label }}">{{ form.number6.label }}</label>
     {{ form.number6 }}
 </div>
+</div>
+
 
 <br>
+<div class="form-group">
 <h6>Podaj przedział czsowy swojego zakładu:</h> 
+<br>
   <body style="background-color: ivory;">
 
-    <section class="container">
-            <div class="form-group">
+    <section class="form-group">
+            <div class="form-group mb-3">
                 <label for="date" class="col-sm-3 col-form-label">Data rozpoczęcia zakładu</label>
                 {{ form.startdate }}
             </div>
@@ -50,6 +55,7 @@
     </section>
 
     <br>
+    </div>
     <script type="text/javascript">
         $(function() {
             $('#datepicker-start').datepicker();
@@ -61,6 +67,7 @@
             $('#datepicker-end').datepicker();
         });
     </script>
+
     <div class="form-check">
         {{ form.isplus }}
         <label class="form-check-label" for="flexCheckDefault">
@@ -72,22 +79,33 @@
     </form>
 
     <hr>
-    {% for draw in result %}
-        <p>{{ draw.id }}       {{ draw.date }}</p>
-       <p>{% for i in draw.typing_set.all %}
-        {% if i.isplus == False %}
-         {{ i.number }}
-         {% endif %}
-         {% endfor %}
-       </p>
+
+    {% for draw in results %}
+    <div class="card" style="width: 25rem;">
+    <div class="card-body">
+    <h5 class="card-title">Numer losowania: {{ draw.id }} </h5>
+        <p class="card-text">Data: {{ draw.date }}</p>
+            <p class="mb-3">{% for i in draw.lotto %}
+                {% if i.win == False %}
+                <button type="button" class="btn btn-primary custom"> {{ i.number }} </button>
+                {% else %}
+                <button type="button" class="btn btn-success custom"> {{ i.number }} </button>
+                {% endif %}
+                {% endfor %}
+            </p>
        
-       <p>{% for i in draw.typing_set.all %}        
-        {% if i.isplus == True %}
-        {{ i.number }}
-        {% endif %}
+       <p>{% for i in draw.lottoPlus%}        
+            {% if i.win == False %}
+                <button type="button" class="btn btn-primary custom"> {{ i.number }} </button>
+            {% else %}
+                <button type="button" class="btn btn-success custom">{{ i.number }}</button>
+            {% endif %}
          {% endfor %}
        </p>
+    </div>
+</div>
     {% endfor %}
+
 </body>
 
 

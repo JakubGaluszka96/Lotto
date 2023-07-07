@@ -30,7 +30,7 @@ class SeleniumDbUpdater():
         if LastIDfromDB == 0:
             url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.lastId+"&index=1&size="+self.lastId+"&sort=drawSystemId&order=DESC"
         else:
-            size = self.lastId - LastIDfromDB
+            size = str(int(self.lastId) - LastIDfromDB)
             url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.lastId+"&index=1&size="+size+"&sort=drawSystemId&order=DESC"
         driver.get(url)
         result = driver.find_element(By.TAG_NAME,"pre").get_attribute("innerHTML")

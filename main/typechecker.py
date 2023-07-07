@@ -24,13 +24,14 @@ class ResultReport():
         self.lottoPlus=[]
         for i in draw:
             if plus == False:
-                if i.number in bet:
-                    typ=Typing(number=i.number, win=True)
-                    self.lotto.append(typ)
-                    self.wins+=1
-                else:
-                    typ=Typing(number=i.number, win=False)
-                    self.lotto.append(typ)
+                if i.isplus == False:
+                    if i.number in bet:
+                        typ=Typing(number=i.number, win=True)
+                        self.lotto.append(typ)
+                        self.wins+=1
+                    else:
+                        typ=Typing(number=i.number, win=False)
+                        self.lotto.append(typ)
             if plus == True:
                 if i.isplus == False:
                     if i.number in bet:
@@ -71,6 +72,7 @@ class TypeChecker(ResultReport):
 
     def MakeResults(self, bet: Bet):
         draws = self.GetDrawsByPeriod(bet=bet)
+        self.results=[]
         for draw in draws:
             result = ResultReport()
             result.MakeResult(draw=draw, bet=bet)
