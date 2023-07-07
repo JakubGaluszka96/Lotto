@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import BetList, Bet
-from .forms import CreateNewBet, CheckType, Typing
+from .models import BetList, Bet, LottoDraw
+from .forms import CreateNewBet, CheckType
 from .dbupdater import SeleniumDbUpdater
-from .typechecker import TypeChecker
+from .typechecker import TypeChecker, ResultReport, Typing
 # Create your views here.
 
 def index(response, id):
@@ -48,10 +48,14 @@ def home(response):
             type=Bet()
             type.ParseForm(form=form)
             checker = TypeChecker()
-            checker.GetDrawsByPeriod(type)
-            result = checker.draws
-            
-            
+            checker.MakeResults(type)
+            result = checker.results[0]
+            print(result.id)
+            print(result.date)
+            print(result.winsPlus)
+            print(result.lottoPlus[0].number)
+            print(result.lottoPlus[0].win)
+            result=checker.GetDrawsByPeriod(type)
         return render(response, "main/home.html", {"form":form, "result":result})
     else:
         form = CheckType()

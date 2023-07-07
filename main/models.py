@@ -17,7 +17,7 @@ class Bet(models.Model):
     startdate = models.DateField()
     enddate = models.DateField()
     isplus = models.BooleanField()
-    numbers = [models.IntegerField]
+    numbers = []
 
     def ParseForm(self, form: CheckType):
         self.startdate=form.cleaned_data["startdate"]
@@ -43,6 +43,12 @@ class Number(models.Model):
 class LottoDraw(models.Model):
     id = models.IntegerField(primary_key=True)
     date = models.DateField()
+
+    def get_typing_list(self):
+        lotto = []
+        for i in self.typing_set.all():
+                lotto.append(i)
+        return lotto
 
 
 class Typing(models.Model):
