@@ -34,23 +34,23 @@ def list(response):
     return render(response, "main/list.html", {"ls":ls})
 
 def update(response):
-    Updater=SeleniumDbUpdater()
-    Updater.Update()
+    updater=SeleniumDbUpdater()
+    updater.update()
 
     return render(response, "main/base.html")
 
 
 def home(response):
-    result = ""
     if response.method == "POST":
         form = CheckType(response.POST)
         if form.is_valid():# and form.is_unique():
             type=Bet()
-            type.ParseForm(form=form)
+            type.parse_form(form=form)
             checker = TypeChecker()
-            checker.MakeResults(type)
+            checker.make_results(type)
             results = checker.results
-        return render(response, "main/home.html", {"form":form, "results":results})
+            summary = checker.get_summary()
+        return render(response, "main/home.html", {"form":form, "results":results, "summary":summary})
     else:
         form = CheckType()
         return render(response, "main/home.html", {"form":form})

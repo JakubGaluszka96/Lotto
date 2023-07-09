@@ -79,7 +79,8 @@
     </form>
 
     <hr>
-
+    <p>Trafienia:</p>
+    <p> {{ summary }} </p>
     {% for draw in results %}
     <div class="card" style="width: 25rem;">
     <div class="card-body">
@@ -94,7 +95,7 @@
                 {% endfor %}
             </p>
        
-       <p>{% for i in draw.lottoPlus%}        
+       <p>{% for i in draw.lotto_plus%}        
             {% if i.win == False %}
                 <button type="button" class="btn btn-primary custom"> {{ i.number }} </button>
             {% else %}

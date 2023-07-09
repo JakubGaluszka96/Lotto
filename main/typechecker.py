@@ -13,18 +13,18 @@ class ResultReport():
     id=int
     date=datetime.date
     lotto=[]
-    lottoPlus=[]
+    lotto_plus=[]
     wins=int
-    winsPlus=int
+    wins_plus=int
 
     def compare(self, draw, bet, plus: bool):
         self.wins=0
-        self.winsPlus=0
+        self.wins_plus=0
         self.lotto=[]
-        self.lottoPlus=[]
+        self.lotto_plus=[]
         for i in draw:
             if plus == False:
-                if i.isplus == False:
+                if i.is_plus == False:
                     if i.number in bet:
                         typ=Typing(number=i.number, win=True)
                         self.lotto.append(typ)
@@ -33,7 +33,7 @@ class ResultReport():
                         typ=Typing(number=i.number, win=False)
                         self.lotto.append(typ)
             if plus == True:
-                if i.isplus == False:
+                if i.is_plus == False:
                     if i.number in bet:
                         typ=Typing(number=i.number, win=True)
                         self.lotto.append(typ)
@@ -44,39 +44,80 @@ class ResultReport():
                 else:
                     if i.number in bet:
                         typ=Typing(number=i.number, win=True)
-                        self.lottoPlus.append(typ)
-                        self.winsPlus+=1
+                        self.lotto_plus.append(typ)
+                        self.wins_plus+=1
                     else:
                         typ=Typing(number=i.number, win=False)
-                        self.lottoPlus.append(typ)
+                        self.lotto_plus.append(typ)
         
 
 
-    def MakeResult(self, draw: LottoDraw, bet: Bet):
+    def make_result(self, draw: LottoDraw, bet: Bet):
         self.id=draw.id
         self.date=draw.date
         lotto = draw.get_typing_list()
-        self.compare(draw=lotto, bet=bet.numbers, plus=bet.isplus)
+        self.compare(draw=lotto, bet=bet.numbers, plus=bet.is_plus)
         
 
 class TypeChecker(ResultReport):
 
     results = []
 
-    def GetDrawsByPeriod (self, bet: Bet):
+    def get_draws_by_period (self, bet: Bet):
         start = bet.startdate
         end = bet.enddate
         draws=LottoDraw.objects.filter(date__range=(start, end))
         return draws
     
 
-    def MakeResults(self, bet: Bet):
-        draws = self.GetDrawsByPeriod(bet=bet)
+    def make_results(self, bet: Bet):
+        draws = self.get_draws_by_period(bet=bet)
         self.results=[]
         for draw in draws:
             result = ResultReport()
-            result.MakeResult(draw=draw, bet=bet)
+            result.make_result(draw=draw, bet=bet)
             self.results.append(result)
+
+    def get_summary(self):
+        output={"lotto":{},
+                "lotto_plus":{}}
+        
+        summary = {0: 0,
+                   1: 0,
+                   2: 0,
+                   3: 0,
+                   4: 0,
+                   5: 0,
+                   6: 0
+                   }
+        for i in self.results:
+            for j in summary:
+                key = j
+                print(summary[key])
+                if i.wins==j:
+                    summary[key]+=1
+        output["lotto"]=summary
+
+
+        summary = {0: 0,
+                   1: 0,
+                   2: 0,
+                   3: 0,
+                   4: 0,
+                   5: 0,
+                   6: 0
+                   }
+        for i in self.results:
+            for j in summary:
+                key = j
+                print(summary[key])
+                if i.wins_plus==j:
+                    summary[key]+=1
+        output["lotto_plus"]=summary
+        
+        return output
+
+
         
 
 

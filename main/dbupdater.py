@@ -13,32 +13,31 @@ from main.models import LottoDraw
 
 class SeleniumDbUpdater():
 
-    lastId = int
+    last_id = int
 
-    def Update(self):
+    def update(self):
         PATH = "/usr/bin/chromedriver"
         s=Service(PATH)
         driver=webdriver.Chrome(service=s)
         driver.get("https://www.lotto.pl/lotto/wyniki-i-wygrane")
-        self.lastId = driver.find_element(By.CLASS_NAME,"result-item__number").get_attribute("innerHTML").replace(" ", "").strip()
+        self.last_id = driver.find_element(By.CLASS_NAME,"result-item__number").get_attribute("innerHTML").replace(" ", "").strip()
         if len(LottoDraw.objects.all()) != 0:
-            LastIDfromDB = LottoDraw.objects.all().order_by("-id")[0].id
+            last_id_from_db = LottoDraw.objects.all().order_by("-id")[0].id
         else:
-            LastIDfromDB = 0
-        if LastIDfromDB == self.lastId:
+            last_id_from_db = 0
+        if last_id_from_db == self.last_id:
             return print("DB up to date")
-        if LastIDfromDB == 0:
-            url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.lastId+"&index=1&size="+self.lastId+"&sort=drawSystemId&order=DESC"
+        if last_id_from_db == 0:
+            url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.last_id+"&index=1&size="+self.last_id+"&sort=drawSystemId&order=DESC"
         else:
-            size = str(int(self.lastId) - LastIDfromDB)
-            url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.lastId+"&index=1&size="+size+"&sort=drawSystemId&order=DESC"
+            size = str(int(self.last_id) - last_id_from_db)
+            url = "https://www.lotto.pl/api/lotteries/draw-results/by-number-per-game?gameType=Lotto&drawSystemId="+self.last_id+"&index=1&size="+size+"&sort=drawSystemId&order=DESC"
         driver.get(url)
         result = driver.find_element(By.TAG_NAME,"pre").get_attribute("innerHTML")
         driver.close()
-        drawsJson = json.loads(result)
-        for draw in drawsJson["items"]:
+        draws_json = json.loads(result)
+        for draw in draws_json["items"]:
             id = draw["drawSystemId"]
-            print(id)
             drawdate = draw["drawDate"].split("T")[0].split("-")
             year = int(drawdate[0])
             month = int(drawdate[1])
@@ -51,8 +50,8 @@ class SeleniumDbUpdater():
                     for number in numbers:
                         mod.typing_set.create(number=number, isplus=False)
                 if result["gameType"] == "LottoPlus":
-                    plusnumbers = result["resultsJson"]
-                    for number in plusnumbers:
+                    plus_numbers = result["resultsJson"]
+                    for number in plus_numbers:
                         mod.typing_set.create(number=number, isplus=True)          
             mod.save()
         return  
