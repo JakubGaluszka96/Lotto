@@ -4,6 +4,7 @@ from .models import BetList, Bet, LottoDraw
 from .forms import CreateNewBet, CheckType
 from .dbupdater import SeleniumDbUpdater
 from .typechecker import TypeChecker, ResultReport, Typing
+import json
 # Create your views here.
 
 def index(response, id):
@@ -44,12 +45,12 @@ def home(response):
     if response.method == "POST":
         form = CheckType(response.POST)
         if form.is_valid():# and form.is_unique():
-            type=Bet()
-            type.parse_form(form=form)
+            bet=Bet()
+            bet.parse_form(form=form)
             checker = TypeChecker()
-            checker.make_results(type)
+            checker.make_results(bet)
             results = checker.results
-            summary = checker.get_summary()
+            summary = json.loads(checker.get_summary())
         return render(response, "main/home.html", {"form":form, "results":results, "summary":summary})
     else:
         form = CheckType()

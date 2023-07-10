@@ -1,6 +1,7 @@
 from main.models import Bet, LottoDraw
 from .models import LottoDraw, Bet, Typing
 import datetime
+import json
 
 class Typing():
     number=int
@@ -93,7 +94,6 @@ class TypeChecker(ResultReport):
         for i in self.results:
             for j in summary:
                 key = j
-                print(summary[key])
                 if i.wins==j:
                     summary[key]+=1
         output["lotto"]=summary
@@ -110,12 +110,12 @@ class TypeChecker(ResultReport):
         for i in self.results:
             for j in summary:
                 key = j
-                print(summary[key])
                 if i.wins_plus==j:
                     summary[key]+=1
         output["lotto_plus"]=summary
+        output_json = json.dumps(output)
         
-        return output
+        return output_json
 
 
         
