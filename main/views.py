@@ -50,7 +50,12 @@ def home(response):
             checker = TypeChecker()
             checker.make_results(bet)
             results = checker.results
+            print(len(results))
+            for i in results:
+                for j in i.lotto_plus:
+                    print(j.number)
             summary = json.loads(checker.get_summary())
+            print(summary["lotto_plus"])
         return render(response, "main/home.html", {"form":form, "results":results, "summary":summary})
     else:
         form = CheckType()

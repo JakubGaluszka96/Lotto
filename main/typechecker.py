@@ -20,7 +20,7 @@ class ResultReport():
 
     def compare(self, draw, bet, plus: bool):
         self.wins=0
-        self.wins_plus=0
+        self.wins_plus=None
         self.lotto=[]
         self.lotto_plus=[]
         for i in draw:
@@ -42,14 +42,19 @@ class ResultReport():
                     else:
                         typ=Typing(number=i.number, win=False)
                         self.lotto.append(typ)
-                else:
+                elif i.is_plus == True:
                     if i.number in bet:
                         typ=Typing(number=i.number, win=True)
                         self.lotto_plus.append(typ)
-                        self.wins_plus+=1
+                        if self.wins_plus == None:
+                            self.wins_plus = 1
+                        else:
+                            self.wins_plus+=1
                     else:
                         typ=Typing(number=i.number, win=False)
                         self.lotto_plus.append(typ)
+                        if self.wins_plus == None:
+                            self.wins_plus = 0
         
 
 

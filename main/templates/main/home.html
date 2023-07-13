@@ -78,7 +78,7 @@
     </form>
 
     <hr>
-    {% if results|length != 0 %}
+    {% if results %}
     <div class="section">
         <h4><a href="#" class="section_toggle"></a> Wyniki </h4>
         <table class="table">
@@ -127,7 +127,9 @@
                         </tbody>
                     </table>
                 </td>
-                {% if results.1.lotto_plus %}
+                {% with results|last as last %}
+
+                {% if last.lotto_plus|length != 0 %}
                 <td width=200px>
                     <table class="table">
                         <thead>
@@ -154,7 +156,9 @@
             </tr>
         </table>
     </div>  
+    {% endwith %}
     {% endif %}
+    
 
 
 
