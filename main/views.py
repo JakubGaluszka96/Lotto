@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import BetList, Bet, LottoDraw
+from .models import BetList, LottoDraw
 from .forms import CreateNewBet, CheckType
 from .dbupdater import SeleniumDbUpdater
-from .typechecker import TypeChecker, ResultReport, Typing
+from .typechecker import TypeChecker, ResultReport, Typing, Bet
 import json
 # Create your views here.
 
@@ -64,8 +64,8 @@ def create(response):
         print(form)
         if form.is_valid():
             n = form.cleaned_data["name"]
+            t = BetList()
             response.user.betlist_set.create(name=n)
-            t = BetList(name=n)
             t.save() 
         return HttpResponseRedirect("/%i" %t.id)
         

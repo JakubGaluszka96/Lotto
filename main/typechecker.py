@@ -1,7 +1,26 @@
 from main.models import Bet, LottoDraw
 from .models import LottoDraw, Bet, Typing
+from .forms import CheckType
 import datetime
 import json
+
+class Bet():
+    startdate = datetime
+    enddate = datetime
+    is_plus = bool
+    numbers = []
+
+    def parse_form(self, form: CheckType):
+        self.startdate=form.cleaned_data["startdate"]
+        self.enddate=form.cleaned_data["enddate"]
+        self.is_plus=form.cleaned_data["isplus"]
+        self.numbers = [form.cleaned_data["number1"], 
+                   form.cleaned_data["number2"], 
+                   form.cleaned_data["number3"], 
+                   form.cleaned_data["number4"], 
+                   form.cleaned_data["number5"], 
+                   form.cleaned_data["number6"]]
+
 
 class Typing():
     number=int

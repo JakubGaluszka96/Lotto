@@ -1,18 +1,39 @@
 <!doctype html>
 <html>
-    <nav class="navbar navbar-dark bg-primary">
-        <div class="container d-flex flex-wrap">
-            <ul class="nav me-auto align-items-center justify-content-left">
-                <li class="nav-item">          
-                <a class="navbar-brand" href="/">
-                <img src="https://www.lotto.pl/cdn/2b905a22797b642209815161ab7dae73.svg" alt="Logo" width="90" height="72" class="d-inline-block align-text-top">
-                </a>  
-                </li>
-
-              <li class="nav-item"><a href="login"><button type="button" class="btn btn-outline-light me-2">Login</button></a></li>
-              <li class="nav-item"><a href="register"><button type="button" class="btn btn-warning">Zarejestruj się</button></a></li>
-            </ul>
-          </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <a class="navbar-brand" href="/">
+            <img src="https://www.lotto.pl/cdn/2b905a22797b642209815161ab7dae73.svg" alt="Logo" width="90" height="72" class="d-inline-block align-text-top">
+        </a>
+        {% if user.is_authenticated %}
+          <ul class="navbar-nav mr-auto mt-0 mt-2 ">
+            <li class="nav-item active">
+              <a class="nav-link" href="/list">Moje zakłady<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/create">Nowy zakład</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">AI-Typing</a>
+            </li>
+          </ul>
+          <a href="/logout/"><button class="btn btn-warning my-2 my-sm-0" type="submit">Wyloguj</button></a>
+        {% else %}
+        <ul class="navbar-nav mr-auto mt-0 mt-2 ">
+            <li class="nav-item active">
+              <a class="nav-link">Ciebie też kręcą miliony?<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" >Sprawdź swój zakład zakład</a>
+            </li>
+          </ul>
+          <a href="/login/"><button class="btn btn-outline-light my-2 my-sm-0" type="submit">Logowanie</button></a>
+          <a href="/register/"><button class="btn btn-warning my-2 my-sm-0" type="submit">Rejestracja</button></a>
+        {% endif %}
+        </div>
       </nav>
     <head>
         <style type="text/css">
@@ -21,9 +42,10 @@
             .navbar a {
                 padding:6px 8px 6px 16px;
                 text-decoration: none;
-                font-size:40px;
+                font-size:25px;
                 color: #818181;
                 display:block;
+                font: Ubuntu;
             }
             .main{
                 margin-left:160px;

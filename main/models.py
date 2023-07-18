@@ -19,18 +19,26 @@ class Bet(models.Model):
     startdate = models.DateField()
     enddate = models.DateField()
     is_plus = models.BooleanField()
-    numbers = []
 
     def parse_form(self, form: CheckType):
         self.startdate=form.cleaned_data["startdate"]
         self.enddate=form.cleaned_data["enddate"]
         self.is_plus=form.cleaned_data["isplus"]
-        self.numbers = [form.cleaned_data["number1"], 
+        numbers = [form.cleaned_data["number1"], 
                    form.cleaned_data["number2"], 
                    form.cleaned_data["number3"], 
                    form.cleaned_data["number4"], 
                    form.cleaned_data["number5"], 
                    form.cleaned_data["number6"]]
+        for i in numbers:           
+            self.number_set.create(number=i)
+
+    def get_numbers(self):
+        numbers = []
+        for number in self.number_set.all():
+                numbers.append(number)
+        return numbers
+
 
 
 

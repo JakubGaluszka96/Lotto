@@ -48,11 +48,11 @@ class SeleniumDbUpdater():
                 if result["gameType"] == "Lotto":
                     numbers=result["resultsJson"]
                     for number in numbers:
-                        mod.typing_set.create(number=number, isplus=False)
+                        mod.typing_set.create(number=number, is_plus=False)
                 if result["gameType"] == "LottoPlus":
                     plus_numbers = result["resultsJson"]
                     for number in plus_numbers:
-                        mod.typing_set.create(number=number, isplus=True)          
+                        mod.typing_set.create(number=number, is_plus=True)          
             mod.save()
         return  
        

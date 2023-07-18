@@ -8,8 +8,9 @@ Zaloguj
 <form method="post" class="form-group">
     {% csrf_token %}
     {{ form|crispy }}
+    <p> Nie masz jeszcze konta? <a href="/register">Utwórz nowe konto</p>
     <button type="submit" class="btn btn-primary">Zaloguj</button>
     <hr>
-    <p> Nie masz jeszcze konta? <a href="/register">Utwórz nowe konto</p>
+    
 </form>
 {% endblock %}
