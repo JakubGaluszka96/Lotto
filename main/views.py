@@ -50,12 +50,7 @@ def home(response):
             checker = TypeChecker()
             checker.make_results(bet)
             results = checker.results
-            print(len(results))
-            for i in results:
-                for j in i.lotto_plus:
-                    print(j.number)
             summary = json.loads(checker.get_summary())
-            print(summary["lotto_plus"])
         return render(response, "main/home.html", {"form":form, "results":results, "summary":summary})
     else:
         form = CheckType()
@@ -69,6 +64,7 @@ def create(response):
         print(form)
         if form.is_valid():
             n = form.cleaned_data["name"]
+            response.user.betlist_set.create(name=n)
             t = BetList(name=n)
             t.save() 
         return HttpResponseRedirect("/%i" %t.id)
@@ -76,3 +72,8 @@ def create(response):
     else:
         form = CreateNewBet()
         return render(response, "main/create.html", {"form":form})
+
+
+def register(response):
+    ls = BetList.objects.all()
+    return render(response, "main/list.html", {"ls":ls})

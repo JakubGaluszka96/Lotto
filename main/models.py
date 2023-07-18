@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 from .forms import CheckType
 
 # Create your models here.
 
 class BetList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     name = models.CharField(max_length=1000)
 
     def __str__(self):
