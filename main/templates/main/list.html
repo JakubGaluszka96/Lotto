@@ -1,15 +1,25 @@
 {% extends "main/base.html" %}
 {% block title %} 
-View List
+Twoje zakłady
 {% endblock %}
 
 {% block content %} 
-{% for element in ls %}
-<h1>{{element.name}}</h1>
-<u1>
-{% for type in element.type_set.all %}
-    <li>{{type.typing}}</li>
-{% endfor %}
-</u1>
+{% for bet in bet_list %}
+<div class="card">
+    <h5 class="card-header"><b>{{bet.name}}</b></h5>
+    <div class="card-body">
+      <h5 class="card-title">Czas trwania zakładu od: <b>{{bet.startdate}}</b> do: <b>{{bet.enddate}}</b></h5>
+      <p class="card-text">{% for number in bet.number_set.all %} 
+        <button type="button" class="btn btn-primary custom"> {{ number.number }} </button>
+        {% endfor %}</p>
+        {% if bet.is_plus == True %}
+            <p><b>PLUS:</b> <button type="button" class="btn btn-success"> TAK </button></p>
+        {% else %}
+            <p><b>PLUS:</b>  <button type="button" class="btn btn-outline-success"> NIE </button></p>
+        {% endif %}
+      <a href="/{{bet.id}}" class="btn btn-primary">Sprawdź wyniki</a>
+    </div>
+  </div>
+<br>
 {% endfor %}
 {% endblock %}

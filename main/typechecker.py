@@ -1,5 +1,5 @@
-from main.models import Bet, LottoDraw
-from .models import LottoDraw, Bet, Typing
+from main.models import UserBet, LottoDraw
+from .models import LottoDraw, UserBet, Typing
 from .forms import CheckType
 import datetime
 import json
@@ -21,6 +21,11 @@ class Bet():
                    form.cleaned_data["number5"], 
                    form.cleaned_data["number6"]]
 
+    def parse_userbet(self, bet: UserBet):
+        self.startdate=bet.startdate
+        self.enddate=bet.enddate
+        self.is_plus=bet.is_plus
+        self.numbers = bet.get_numbers()
 
 class Typing():
     number=int
@@ -102,6 +107,7 @@ class TypeChecker(ResultReport):
             result = ResultReport()
             result.make_result(draw=draw, bet=bet)
             self.results.append(result)
+
 
     def get_summary(self):
         output={"lotto":{},

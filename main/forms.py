@@ -2,11 +2,6 @@ from django import forms
 import numpy as np
 
 
-class CreateNewBet(forms.Form):
-    name = forms.CharField(label="Name", max_length=200)
-
-
-
 class CheckType(forms.Form):
     INTEGER_CHOICES = [tuple([x,x]) for x in range(1,50)]
     number1 = forms.IntegerField(label="1 typ", widget=forms.Select(choices=INTEGER_CHOICES))
@@ -18,13 +13,13 @@ class CheckType(forms.Form):
     startdate = forms.DateField(
     widget=forms.SelectDateWidget(
         empty_label=("Choose Year", "Choose Month", "Choose Day"),years=range(1957, 2024),
-    ),
+    ),label="startdate",
 )
     
     enddate = forms.DateField(
     widget=forms.SelectDateWidget(
         empty_label=("Choose Year", "Choose Month", "Choose Day"),years=range(1957, 2024),
-    ),
+    ),label="enddate"
     )
     isplus= forms.BooleanField(label="isplus", required=False)
 
@@ -36,7 +31,10 @@ class CheckType(forms.Form):
                     if numbers[i] == numbers[j]:
                         return False
         return True
-        
+
+class CreateNewBet(CheckType):
+    name = forms.CharField(label="Name", max_length=200)
+
 class Typing(forms.Form):
     INTEGER_CHOICES= [tuple()]
     number=forms.IntegerField(label="1", widget=forms.Select(choices=INTEGER_CHOICES))

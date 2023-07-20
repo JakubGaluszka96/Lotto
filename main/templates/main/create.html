@@ -2,15 +2,11 @@
 {% block title %} 
 Create new bet
 {% endblock %}
+<h3>Create bet</h>
 {% block content %} 
-Create bet
 <form method="post" action="/create/" class="form-group">
     {% csrf_token %}
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <button type="submit", name="save" class="btn btn-success">Create</button>
-        </div>
-        {{form.name}}
-    </div>
+    {{ form.as_p }}
+            <button type="submit", name="save" class="btn btn-success">Stwórz</button>
 </form>
 {% endblock %}
