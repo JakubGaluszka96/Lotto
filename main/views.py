@@ -1,16 +1,18 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect,BadHeaderError
-from .models import LottoDraw, UserBet, Number
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from .models import UserBet
 from .forms import CreateNewBet, CheckType
 from .dbupdater import SeleniumDbUpdater
-from .typechecker import TypeChecker, ResultReport, Typing, Bet
+from .typechecker import TypeChecker, Bet
 from django.http.response import HttpResponseServerError
 import json
 # Create your views here.
 
 def index(response, id):
     userbet = UserBet.objects.get(id=id)
-    if userbet in response.user.userbet.all():
+    if response.user.is_anonymous:
+        return HttpResponseServerError("<h>500</h> <p>No User. Log in to view this page.</p>")
+    elif userbet in response.user.userbet.all():
         bet=Bet()
         bet.parse_userbet(bet=userbet)
         checker = TypeChecker()
@@ -18,18 +20,25 @@ def index(response, id):
         results = checker.results
         summary = json.loads(checker.get_summary())
         return render(response, "main/result.html", {"results":results, "summary":summary})
-    else:
+    else:     
         return HttpResponseServerError("<h>500</h><p>Incorrect user</p>")
             
 
 
 def list(response):
     bet_list = response.user.userbet.all()
-    return render(response, "main/list.html", {"bet_list":bet_list})
+    if response.user.is_anonymous:
+        return HttpResponseServerError("<h>500</h> <p>No User. Log in to view this page.</p>")
+    else:
+        return render(response, "main/list.html", {"bet_list":bet_list})
 
 def update(response):
-    updater=SeleniumDbUpdater()
-    updater.update()
+    if response.user.is_superuser:
+        updater=SeleniumDbUpdater()
+        updater.update()
+    else:
+        return HttpResponseServerError("<h>500</h> <p>You are not allowed to perform this operation</p>")
+
 
     return render(response, "main/base.html")
 
@@ -37,7 +46,7 @@ def update(response):
 def home(response):
     if response.method == "POST":
         form = CheckType(response.POST)
-        if form.is_valid():# and form.is_unique():
+        if form.is_valid():
             bet=Bet()
             bet.parse_form(form=form)
             checker = TypeChecker()
@@ -52,8 +61,12 @@ def home(response):
 
 
 def create(response):
+    if response.user.is_anonymous:
+        return HttpResponseServerError("<h>500</h> <p>No User. Log in to view this page.</p>")
+    
     if response.method == "POST":
         form = CreateNewBet(response.POST)
+
         if form.is_valid():
             user_bet=UserBet(name=form.cleaned_data["name"],
                              startdate=form.cleaned_data["startdate"],
@@ -71,10 +84,7 @@ def create(response):
                    form.cleaned_data["number6"]]
             for i in numbers:           
                 user_bet.number_set.create(number=i, win=False)
-
-                
-
-        return HttpResponseRedirect("/list")#"/%i" %bet.id)
+        return HttpResponseRedirect("/list")
         
     else:
         form = CreateNewBet()
