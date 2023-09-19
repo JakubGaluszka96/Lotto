@@ -4,4 +4,5 @@ from django.http.response import HttpResponseServerError
 import json
 
 def aityping(response):
-        return render(response, "aityping/aityping.html")
+        form="HAHAH"
+        return render(response, "aityping/aityping.html", {"form":form})
