@@ -15,13 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from register import views as registerviews
-from aityping import views as aitypingviews
+from aityping import views 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("register/", registerviews.register, name="register"),
-    path('', include("aityping.urls")),
-    path('', include("main.urls")),
-    path('', include("django.contrib.auth.urls")),
+    path("aityping/", views.aityping, name="aityping"),
 ]

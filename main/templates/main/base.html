@@ -47,10 +47,6 @@
                 display:block;
                 font: Ubuntu;
             }
-            .main{
-                margin-left:160px;
-                padding: 0px 10px;
-            }
             .custom {
                 width: 50px !important;
             }
@@ -71,17 +67,11 @@
         
     </head>
 
-<body>
-    <div id="content", name="content", class="main">
-        <div class="row justify-content-left">
-            <div class="col-8">
-                <hr class="mt-0 mb-4">
+<body> 
+        <div class="container px-0 py-5" id="content">
                     {% block content %}
                     {% endblock %}
-            </div>
         </div>
-    </div>
-  
 </body>
 </html>
 
