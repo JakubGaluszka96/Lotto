@@ -1,20 +1,28 @@
 # Lotto
-Creating website which allows user to check lotto results and compare them to his types. It will be created using django framework.
+Creating website which allows user to check lottery results and compare them to his types. It will be created using django framework.
 ---
 
-sudo apt install python3
+Requires python:
 
----
+> sudo apt install python3
 
-python3 -m pip install Django
+Install venv:
 
----
+> python3 -m venv venv
 
-python3 manage.py runserver
+activate:
 
----
+> source venv/bin/activate
 
-browse http://127.0.0.1:8000/ and check your types!
+Install requirements:
+
+> pip install -r requirements.txt
+
+Run server:
+
+> python3 manage.py runserver
+
+Go to: http://127.0.0.1:8000/products/
 
 
 
